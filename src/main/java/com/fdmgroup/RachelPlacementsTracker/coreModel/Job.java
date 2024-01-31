@@ -2,6 +2,8 @@ package com.fdmgroup.RachelPlacementsTracker.coreModel;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -25,6 +27,7 @@ public class Job {
 	private AccountManager accountManager;
 
 	@ManyToMany(mappedBy = "jobs")
+	@JsonBackReference
 	private List<Trainee> trainees;
 
 	public List<Trainee> getTrainees() {

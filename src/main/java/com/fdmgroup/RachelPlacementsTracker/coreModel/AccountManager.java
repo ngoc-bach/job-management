@@ -2,10 +2,12 @@ package com.fdmgroup.RachelPlacementsTracker.coreModel;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fdmgroup.RachelPlacementsTracker.model.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -25,16 +27,16 @@ public class AccountManager {
 	private User user;
 
 	// should set jobs here?
-	@OneToMany(mappedBy = "accountManager")
-	private List<Job> jobs;
+//	@OneToMany(mappedBy = "accountManager")
+//	private List<Job> jobs;
 
-	public List<Job> getJobs() {
-		return jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
-	}
+//	public List<Job> getJobs() {
+//		return jobs;
+//	}
+//
+//	public void setJobs(List<Job> jobs) {
+//		this.jobs = jobs;
+//	}
 
 	public User getUser() {
 		return user;
