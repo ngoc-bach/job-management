@@ -33,11 +33,14 @@ public class UserController {
 	public User findById(@PathVariable int userId) {
 		return this.userService.findById(userId);
 	}
-
+	
 	@PostMapping("users")
 	public void createNewUser(@RequestBody User newUser) {
-		System.out.println(newUser);
-		this.userService.save(newUser);
+		if(newUser.getRole().equals("trainee")) {
+			this.userService.saveTrainee(newUser);
+		}else {
+			this.userService.saveAccountManager(newUser);
+		}
 	}
 
 	@PutMapping("users")

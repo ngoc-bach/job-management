@@ -2,6 +2,8 @@ package com.fdmgroup.RachelPlacementsTracker.coreModel;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fdmgroup.RachelPlacementsTracker.model.User;
 
@@ -16,51 +18,40 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class AccountManager {
+	
 	@Id
 	@GeneratedValue
 	private int id;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private String email;
+	private String location;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FK_USER_ID")
 	private User user;
 
-	// should set jobs here?
-//	@OneToMany(mappedBy = "accountManager")
-//	private List<Job> jobs;
-
-//	public List<Job> getJobs() {
-//		return jobs;
-//	}
-//
-//	public void setJobs(List<Job> jobs) {
-//		this.jobs = jobs;
-//	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public AccountManager() {
 		super();
 	}
 
-	public AccountManager(String name, String email) {
+	public AccountManager(String firstName, String lastName, String email, String location, User user) {
 		super();
-		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
+		this.location = location;
+		this.user = user;
 	}
-
-	public AccountManager(int id, String name, String email) {
+	
+	public AccountManager(int id, String firstName, String lastName, String email, String location, User user) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
+		this.location = location;
+		this.user = user;
 	}
 
 	public int getId() {
@@ -71,12 +62,20 @@ public class AccountManager {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -87,9 +86,24 @@ public class AccountManager {
 		this.email = email;
 	}
 
-	@Override
-	public String toString() {
-		return "AccountManager [id=" + id + ", name=" + name + ", email=" + email + ", user=" + user + "]";
+	public String getLocation() {
+		return location;
 	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+
+
 
 }

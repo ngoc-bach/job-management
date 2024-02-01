@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Job {
@@ -21,6 +22,28 @@ public class Job {
 	private String description;
 	private String location;
 	private String status;
+
+	@Transient
+	private boolean hasApplied;
+	
+	@Transient
+	private boolean isEditable;
+
+	public boolean isHasApplied() {
+		return hasApplied;
+	}
+
+	public void setHasApplied(boolean hasApplied) {
+		this.hasApplied = hasApplied;
+	}
+
+	public boolean isEditable() {
+		return isEditable;
+	}
+
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "FK_ACCOUNTMANAGER_ID")

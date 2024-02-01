@@ -21,7 +21,7 @@ public class Trainee {
 	@GeneratedValue
 	private int id;
 	private String firstName;
-	private String lasttName;
+	private String lastName;
 	private String email;
 	private String location;
 
@@ -33,41 +33,27 @@ public class Trainee {
 	@JoinTable(name = "TRAINEE_JOB", joinColumns = @JoinColumn(name = "FK_TRAINEE_ID"), inverseJoinColumns = @JoinColumn(name = "FK_JOB_ID"))
 	private List<Job> jobs;
 
-	public List<Job> getJobs() {
-		return jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public Trainee() {
 		super();
 	}
 
-	public Trainee(String firstName, String lasttName, String email, String location) {
+	public Trainee(String firstName, String lastName, String email, String location, User user) {
 		super();
 		this.firstName = firstName;
-		this.lasttName = lasttName;
+		this.lastName = lastName;
 		this.email = email;
 		this.location = location;
+		this.user = user;
 	}
 
-	public Trainee(int id, String firstName, String lasttName, String email, String location) {
+	public Trainee(int id, String firstName, String lastName, String email, String location, User user) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
-		this.lasttName = lasttName;
+		this.lastName = lastName;
 		this.email = email;
 		this.location = location;
+		this.user = user;
 	}
 
 	public int getId() {
@@ -86,20 +72,12 @@ public class Trainee {
 		this.firstName = firstName;
 	}
 
-	public String getLasttName() {
-		return lasttName;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLasttName(String lasttName) {
-		this.lasttName = lasttName;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -110,9 +88,27 @@ public class Trainee {
 		this.email = email;
 	}
 
-	@Override
-	public String toString() {
-		return "Trainee [id=" + id + ", firstName=" + firstName + ", lasttName=" + lasttName + ", email=" + email
-				+ ", location=" + location + ", user=" + user + "]";
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
 	}
 }

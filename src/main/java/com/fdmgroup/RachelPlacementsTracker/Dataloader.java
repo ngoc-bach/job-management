@@ -39,28 +39,28 @@ public class Dataloader implements ApplicationRunner {
 	@Transactional
 	public void run(ApplicationArguments args) throws Exception {
 		// CREATE USERS
-		User user1 = new User("rachel.bach", "rb123", "trainee");
-		User user2 = new User("dane.mckillop", "dm456", "trainee");
-		User user3 = new User("wendy.wang", "ww789", "trainee");
-		User user4 = new User("kelly.su", "ks123", "trainee");
-		User user5 = new User("edward.bristow", "ed123", "admin");
-		User user6 = new User("nicholas.lloyd", "nl456", "admin");
+		User user1 = new User("rachel.bach", "rb123", "trainee", "Dane", "Mckillop", "dane.mckillop@fdmgroup.com", "Melbourne");
+		User user2 = new User("dane.mckillop", "dm456", "trainee", "Dane", "Mckillop", "dane.mckillop@fdmgroup.com", "Melbourne");
+		User user3 = new User("wendy.wang", "ww789", "trainee", "Wendy", "Wang", "wendy.wang@fdmgroup.com", "Sydney");
+		User user4 = new User("kelly.su", "ks123", "trainee", "Kelly", "Su", "kelly.su@fdmgroup.com", "Sydney");
+		User user5 = new User("edward.bristow", "ed123", "admin", "Edward", "Bristow", "edward.bristow@fdmgroup.com", "Melbourne");
+		User user6 = new User("nicholas.lloyd", "nl456", "admin", "Nicholas","Lloyd", "nicholas.lloyd@fdmgroup.com", "Sydney");
 
 		List<User> users = Arrays.asList(user1, user2, user3, user4, user5, user6);
 		this.userRepository.saveAll(users);
 
 		// CREATE ACCOUNT MANAGERS
-		AccountManager accountManager1 = new AccountManager("Edward", "edward.bristow@fdmgroup.com");
-		AccountManager accountManager2 = new AccountManager("Nicholas", "nicholas.lloyd@fdmgroup.com");
+		AccountManager accountManager1 = new AccountManager("Edward", "Bristow", "edward.bristow@fdmgroup.com", "Melbourne", user5);
+		AccountManager accountManager2 = new AccountManager("Nicholas", "Lloyd", "nicholas.lloyd@fdmgroup.com", "Sydney", user6);
 
 		List<AccountManager> accountManagers = Arrays.asList(accountManager1, accountManager2);
 		this.aMRepository.saveAll(accountManagers);
 
 		// CREATE TRAINEES
-		Trainee trainee1 = new Trainee("Rachel", "Bach", "rachel.bach@fdmgroup.com", "Melbourne");
-		Trainee trainee2 = new Trainee("Dane", "Mckillop", "dane.mckillop@fdmgroup.com", "Melbourne");
-		Trainee trainee3 = new Trainee("Wendy", "Wang", "wendy.wang@fdmgroup.com", "Sydney");
-		Trainee trainee4 = new Trainee("Kelly", "Su", "kelly.su@fdmgroup.com", "Sydney");
+		Trainee trainee1 = new Trainee("Rachel", "Bach", "rachel.bach@fdmgroup.com", "Melbourne", user1);
+		Trainee trainee2 = new Trainee("Dane", "Mckillop", "dane.mckillop@fdmgroup.com", "Melbourne", user2);
+		Trainee trainee3 = new Trainee("Wendy", "Wang", "wendy.wang@fdmgroup.com", "Sydney", user3);
+		Trainee trainee4 = new Trainee("Kelly", "Su", "kelly.su@fdmgroup.com", "Sydney", user4);
 
 		List<Trainee> trainees = Arrays.asList(trainee1, trainee2, trainee3, trainee4);
 		this.traineeRepository.saveAll(trainees);
@@ -75,15 +75,6 @@ public class Dataloader implements ApplicationRunner {
 		this.jobRepository.saveAll(jobs);
 
 		// SET RELATIONSHIPS
-		// USER - TRAINEE, ACCOUNT MANAGER
-		trainee1.setUser(user1);
-		trainee2.setUser(user2);
-		trainee3.setUser(user3);
-		trainee4.setUser(user4);
-
-		accountManager1.setUser(user5);
-		accountManager2.setUser(user6);
-
 		// JOB - TRAINEE, ACCOUNT MANAGER
 		trainee1.setJobs(Arrays.asList(job1, job3));
 		trainee2.setJobs(Arrays.asList(job1, job2));
