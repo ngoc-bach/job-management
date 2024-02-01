@@ -30,7 +30,7 @@ public class JobService {
 		List<Trainee> trainees = this.traineeRepository.findAll();
 		List<Job> jobs = this.jobRepository.findAll();
 
-		// check hasApplied if user is a trainee
+		// Check hasApplied if user is a trainee
 		List<Job> foundJobsByTrainee = null;
 		for (Trainee trainee : trainees) {
 			if (trainee.getUser().getId() == userId) {
@@ -43,7 +43,7 @@ public class JobService {
 			}
 		}
 
-		// check isEditable if user is an accountManager
+		// Check isEditable if user is an accountManager
 		for (Job job : jobs) {
 			if (job.getAccountManager().getUser().getId() == userId) {
 				job.setEditable(true);

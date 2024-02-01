@@ -39,7 +39,7 @@ public class Dataloader implements ApplicationRunner {
 	@Transactional
 	public void run(ApplicationArguments args) throws Exception {
 		// CREATE USERS
-		User user1 = new User("rachel.bach", "rb123", "trainee", "Dane", "Mckillop", "dane.mckillop@fdmgroup.com", "Melbourne");
+		User user1 = new User("rachel.bach", "rb123", "trainee", "Rachel", "Bach", "rachel.bach@fdmgroup.com", "Melbourne");
 		User user2 = new User("dane.mckillop", "dm456", "trainee", "Dane", "Mckillop", "dane.mckillop@fdmgroup.com", "Melbourne");
 		User user3 = new User("wendy.wang", "ww789", "trainee", "Wendy", "Wang", "wendy.wang@fdmgroup.com", "Sydney");
 		User user4 = new User("kelly.su", "ks123", "trainee", "Kelly", "Su", "kelly.su@fdmgroup.com", "Sydney");
@@ -85,9 +85,6 @@ public class Dataloader implements ApplicationRunner {
 		job2.setTrainees(Arrays.asList(trainee2, trainee3));
 		job3.setTrainees(Arrays.asList(trainee1, trainee3, trainee4));
 		job4.setTrainees(Arrays.asList(trainee3));
-
-//		accountManager1.setJobs(Arrays.asList(job1, job3));
-//		accountManager2.setJobs(Arrays.asList(job2, job4));
 		
 		job1.setAccountManager(accountManager1);
 		job2.setAccountManager(accountManager2);

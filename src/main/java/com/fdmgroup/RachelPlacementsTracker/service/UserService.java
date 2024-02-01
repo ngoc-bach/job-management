@@ -34,11 +34,6 @@ public class UserService {
 		return this.userRepository.findById(userId)
 				.orElseThrow(() -> new RuntimeException("User with " + userId + " cannot be found"));
 	}
-	
-	public Trainee findTraineeByUserId(int userId) { 
-		// TODO: Get trainee by user id
-		return null;
-	}
 
 	public void saveTrainee(User newUser) {
 		Trainee newTrainee = new Trainee();
@@ -65,15 +60,19 @@ public class UserService {
 	public void update(User newUser) {
 		if (this.userRepository.existsById(newUser.getId())) {
 			this.userRepository.save(newUser);
+		}else {
+			throw new RuntimeException("Invalid ID: " + newUser.getId());
 		}
-		throw new RuntimeException("Invalid ID: " + newUser.getId());
+
 	}
 
 	public void deleteById(int userId) {
 		if (this.userRepository.existsById(userId)) {
 			this.userRepository.deleteById(userId);
+		}else {
+			throw new RuntimeException("Invalid ID: " + userId);
 		}
-		throw new RuntimeException("Invalid ID: " + userId);
+
 	}
 
 

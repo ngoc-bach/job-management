@@ -3,6 +3,7 @@ package com.fdmgroup.RachelPlacementsTracker.coreModel;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,9 +45,10 @@ public class Job {
 	public void setEditable(boolean isEditable) {
 		this.isEditable = isEditable;
 	}
-
+	
 	@ManyToOne
 	@JoinColumn(name = "FK_ACCOUNTMANAGER_ID")
+	@JsonIgnore
 	private AccountManager accountManager;
 
 	@ManyToMany(mappedBy = "jobs")
