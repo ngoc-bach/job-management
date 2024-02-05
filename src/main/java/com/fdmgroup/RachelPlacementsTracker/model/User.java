@@ -14,7 +14,7 @@ public class User {
 	private String password;
 	private String role;
 	private String firstName;
-	private String lasttName;
+	private String lastName;
 	private String email;
 	private String location;
 
@@ -29,7 +29,7 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.firstName = firstName;
-		this.lasttName = lasttName;
+		this.lastName = lasttName;
 		this.email = email;
 		this.location = location;
 	}
@@ -42,7 +42,7 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.firstName = firstName;
-		this.lasttName = lasttName;
+		this.lastName = lasttName;
 		this.email = email;
 		this.location = location;
 	}
@@ -80,11 +80,11 @@ public class User {
 	}
 
 	public String getLastName() {
-		return lasttName;
+		return lastName;
 	}
 
 	public void setLasttName(String lasttName) {
-		this.lasttName = lasttName;
+		this.lastName = lasttName;
 	}
 
 	public String getEmail() {

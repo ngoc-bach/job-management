@@ -7,11 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.fdmgroup.RachelPlacementsTracker.coreModel.AccountManager;
 import com.fdmgroup.RachelPlacementsTracker.dal.AMRepository;
+import com.fdmgroup.RachelPlacementsTracker.exceptions.NotFoundException;
 
 @Service
 public class AMService {
 	private AMRepository aMRepository;
-	
+
 	@Autowired
 	public AMService(AMRepository aMRepository) {
 		super();
@@ -24,7 +25,7 @@ public class AMService {
 
 	public AccountManager findById(int accountManagerId) {
 		return this.aMRepository.findById(accountManagerId).orElseThrow(
-				() -> new RuntimeException("Account Manager with ID: " + accountManagerId + " cannot be found"));
+				() -> new NotFoundException("Account Manager with ID: " + accountManagerId + " cannot be found"));
 	}
 
 	public void save(AccountManager accountManager) {
@@ -34,18 +35,17 @@ public class AMService {
 	public void updateAccountManager(AccountManager newAccountManager) {
 		if (this.aMRepository.existsById(newAccountManager.getId())) {
 			this.aMRepository.save(newAccountManager);
-			return;
+		} else {
+			throw new NotFoundException("Account Manager with ID: " + newAccountManager.getId() + " cannot be found");
 		}
-		throw new RuntimeException("Invalid ID: " + newAccountManager.getId());
 	}
 
 	public void deleteAccountManager(int accountManagerId) {
 		if (this.aMRepository.existsById(accountManagerId)) {
 			this.aMRepository.deleteById(accountManagerId);
-			return;
+		} else {
+			throw new NotFoundException("Account Manager with ID: " + accountManagerId + " cannot be found");
 		}
-		throw new RuntimeException("Invalid ID: " + accountManagerId);
-
 	}
 
 }

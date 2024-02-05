@@ -10,7 +10,10 @@ import com.fdmgroup.RachelPlacementsTracker.coreModel.Trainee;
 import com.fdmgroup.RachelPlacementsTracker.dal.AMRepository;
 import com.fdmgroup.RachelPlacementsTracker.dal.TraineeRepository;
 import com.fdmgroup.RachelPlacementsTracker.dal.UserRepository;
+import com.fdmgroup.RachelPlacementsTracker.exceptions.NotFoundException;
 import com.fdmgroup.RachelPlacementsTracker.model.User;
+
+
 
 @Service
 public class UserService {
@@ -32,7 +35,7 @@ public class UserService {
 
 	public User findById(int userId) {
 		return this.userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("User with " + userId + " cannot be found"));
+				.orElseThrow(() -> new NotFoundException("User with ID: " + userId + " cannot be found"));
 	}
 
 	public void saveTrainee(User newUser) {
@@ -45,9 +48,9 @@ public class UserService {
 		this.traineeRepository.save(newTrainee);
 		this.userRepository.save(newUser);
 	}
-	
+
 	public void saveAccountManager(User newUser) {
-		AccountManager newAccountManager = new AccountManager(); 
+		AccountManager newAccountManager = new AccountManager();
 		newAccountManager.setFirstName(newUser.getFirstName());
 		newAccountManager.setLastName(newUser.getLastName());
 		newAccountManager.setEmail(newUser.getEmail());
@@ -60,8 +63,8 @@ public class UserService {
 	public void update(User newUser) {
 		if (this.userRepository.existsById(newUser.getId())) {
 			this.userRepository.save(newUser);
-		}else {
-			throw new RuntimeException("Invalid ID: " + newUser.getId());
+		} else {
+			throw new NotFoundException("User with ID: " + newUser.getId() + " cannot be found");
 		}
 
 	}
@@ -69,12 +72,10 @@ public class UserService {
 	public void deleteById(int userId) {
 		if (this.userRepository.existsById(userId)) {
 			this.userRepository.deleteById(userId);
-		}else {
-			throw new RuntimeException("Invalid ID: " + userId);
+		} else {
+			throw new NotFoundException("User with ID: " + userId + " cannot be found");
 		}
 
 	}
-
-
 
 }

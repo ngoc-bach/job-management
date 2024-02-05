@@ -24,14 +24,15 @@ public class JobController {
 		super();
 		this.jobService = jobService;
 	}
-
+	
 	@GetMapping("jobs")
-	public List<Job> findAll() {
-		return this.jobService.findAll();
+	public List<Job> findAll(@RequestHeader("user_id") String userIdString) {
+		int userId = Integer.parseInt(userIdString);
+		return this.jobService.findAll(userId);
 	}
 
-	@GetMapping("jobs/user-jobs")
-	public List<Job> findAll(@RequestHeader("user_id") String userIdString) {
+	@GetMapping("jobs/user")
+	public List<Job> findJobsByUserId(@RequestHeader("user_id") String userIdString) {
 		int userId = Integer.parseInt(userIdString);
 		return this.jobService.findJobsByUserId(userId);
 	}
@@ -42,18 +43,30 @@ public class JobController {
 	}
 
 	@PostMapping("jobs")
-	public void createNewJob(@RequestBody Job newJob) {
-		this.jobService.save(newJob);
+	public void createNewJob(@RequestHeader("user_id") String userIdString, @RequestBody Job existingJob) {
+		int userId = Integer.parseInt(userIdString);
+		this.jobService.save(userId, existingJob);
 	}
 
 	@PutMapping("jobs")
-	public void updateJob(@RequestBody Job newJob) {
-		this.jobService.update(newJob);
+	public void updateJob(
+			@RequestHeader("user_id") String userIdString, 
+			@RequestBody Job newJob) {
+		int userId = Integer.parseInt(userIdString);
+		this.jobService.update(userId, newJob);
+	}
+	
+	@PutMapping("jobs/apply")
+	public void applyJob(
+			@RequestHeader("user_id") String userIdString, @RequestBody Job existingJob) {
+		int userId = Integer.parseInt(userIdString);
+		this.jobService.apply(userId, existingJob);
 	}
 
 	@DeleteMapping("jobs/{jobId}")
-	public void deleteJob(@PathVariable int jobId) {
-		this.jobService.delete(jobId);
+	public void deleteJob(@RequestHeader("user_id") String userIdString, @PathVariable int jobId) {
+		int userId = Integer.parseInt(userIdString);
+		this.jobService.delete(userId , jobId);
 	}
 
 }

@@ -29,47 +29,15 @@ public class Job {
 	
 	@Transient
 	private boolean isEditable;
-
-	public boolean isHasApplied() {
-		return hasApplied;
-	}
-
-	public void setHasApplied(boolean hasApplied) {
-		this.hasApplied = hasApplied;
-	}
-
-	public boolean isEditable() {
-		return isEditable;
-	}
-
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
-	}
 	
 	@ManyToOne
 	@JoinColumn(name = "FK_ACCOUNTMANAGER_ID")
-	@JsonIgnore
 	private AccountManager accountManager;
 
 	@ManyToMany(mappedBy = "jobs")
 	@JsonBackReference
 	private List<Trainee> trainees;
-
-	public List<Trainee> getTrainees() {
-		return trainees;
-	}
-
-	public void setTrainees(List<Trainee> trainees) {
-		this.trainees = trainees;
-	}
-
-	public AccountManager getAccountManager() {
-		return accountManager;
-	}
-
-	public void setAccountManager(AccountManager accountManager) {
-		this.accountManager = accountManager;
-	}
+	
 
 	public Job() {
 		super();
@@ -92,6 +60,38 @@ public class Job {
 		this.description = description;
 		this.location = location;
 		this.status = status;
+	}
+	
+	// getter
+	public boolean isHasApplied() {
+		for (Trainee trainee : this.trainees) { 
+			return trainee.getJobs().contains(this);
+		}
+		return false;
+	}
+
+	public boolean isEditable() {
+		return isEditable;
+	}
+
+	public void setEditableByUserId(int userId) {
+		this.isEditable = userId == this.accountManager.getUser().getId();
+	}
+
+	public List<Trainee> getTrainees() {
+		return trainees;
+	}
+
+	public void setTrainees(List<Trainee> trainees) {
+		this.trainees = trainees;
+	}
+
+	public AccountManager getAccountManager() {
+		return accountManager;
+	}
+
+	public void setAccountManager(AccountManager accountManager) {
+		this.accountManager = accountManager;
 	}
 
 	public int getId() {

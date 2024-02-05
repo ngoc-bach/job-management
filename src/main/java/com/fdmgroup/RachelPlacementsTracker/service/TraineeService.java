@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fdmgroup.RachelPlacementsTracker.coreModel.Trainee;
 import com.fdmgroup.RachelPlacementsTracker.dal.TraineeRepository;
+import com.fdmgroup.RachelPlacementsTracker.exceptions.NotFoundException;
 
 @Service
 public class TraineeService {
@@ -24,7 +25,7 @@ public class TraineeService {
 
 	public Trainee findById(int traineeId) {
 		return this.traineeRepository.findById(traineeId)
-				.orElseThrow(() -> new RuntimeException("Trainee with ID: " + traineeId + " cannot be found"));
+				.orElseThrow(() -> new NotFoundException("Trainee with ID: " + traineeId + " cannot be found"));
 	}
 
 	public void createNewTrainee(Trainee newTrainee) {
@@ -36,7 +37,7 @@ public class TraineeService {
 			this.traineeRepository.save(newTrainee);
 			return;
 		}
-		throw new RuntimeException("Invalid ID: " + newTrainee.getId());
+		throw new NotFoundException("Invalid ID: " + newTrainee.getId());
 
 	}
 
@@ -45,7 +46,7 @@ public class TraineeService {
 			this.traineeRepository.deleteById(traineeId);
 			return;
 		}
-		throw new RuntimeException("Invalid ID: " + traineeId);
+		throw new NotFoundException("Invalid ID: " + traineeId);
 
 	}
 

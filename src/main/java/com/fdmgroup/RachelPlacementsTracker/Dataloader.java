@@ -38,20 +38,26 @@ public class Dataloader implements ApplicationRunner {
 	@Override
 	@Transactional
 	public void run(ApplicationArguments args) throws Exception {
-		// CREATE USERS
-		User user1 = new User("rachel.bach", "rb123", "trainee", "Rachel", "Bach", "rachel.bach@fdmgroup.com", "Melbourne");
-		User user2 = new User("dane.mckillop", "dm456", "trainee", "Dane", "Mckillop", "dane.mckillop@fdmgroup.com", "Melbourne");
+//		 CREATE USERS
+		User user1 = new User("rachel.bach", "rb123", "trainee", "Rachel", "Bach", "rachel.bach@fdmgroup.com",
+				"Melbourne");
+		User user2 = new User("dane.mckillop", "dm456", "trainee", "Dane", "Mckillop", "dane.mckillop@fdmgroup.com",
+				"Melbourne");
 		User user3 = new User("wendy.wang", "ww789", "trainee", "Wendy", "Wang", "wendy.wang@fdmgroup.com", "Sydney");
 		User user4 = new User("kelly.su", "ks123", "trainee", "Kelly", "Su", "kelly.su@fdmgroup.com", "Sydney");
-		User user5 = new User("edward.bristow", "ed123", "admin", "Edward", "Bristow", "edward.bristow@fdmgroup.com", "Melbourne");
-		User user6 = new User("nicholas.lloyd", "nl456", "admin", "Nicholas","Lloyd", "nicholas.lloyd@fdmgroup.com", "Sydney");
+		User user5 = new User("edward.bristow", "ed123", "admin", "Edward", "Bristow", "edward.bristow@fdmgroup.com",
+				"Melbourne");
+		User user6 = new User("nicholas.lloyd", "nl456", "admin", "Nicholas", "Lloyd", "nicholas.lloyd@fdmgroup.com",
+				"Sydney");
 
 		List<User> users = Arrays.asList(user1, user2, user3, user4, user5, user6);
 		this.userRepository.saveAll(users);
 
 		// CREATE ACCOUNT MANAGERS
-		AccountManager accountManager1 = new AccountManager("Edward", "Bristow", "edward.bristow@fdmgroup.com", "Melbourne", user5);
-		AccountManager accountManager2 = new AccountManager("Nicholas", "Lloyd", "nicholas.lloyd@fdmgroup.com", "Sydney", user6);
+		AccountManager accountManager1 = new AccountManager("Edward", "Bristow", "edward.bristow@fdmgroup.com",
+				"Melbourne", user5);
+		AccountManager accountManager2 = new AccountManager("Nicholas", "Lloyd", "nicholas.lloyd@fdmgroup.com",
+				"Sydney", user6);
 
 		List<AccountManager> accountManagers = Arrays.asList(accountManager1, accountManager2);
 		this.aMRepository.saveAll(accountManagers);
@@ -76,16 +82,16 @@ public class Dataloader implements ApplicationRunner {
 
 		// SET RELATIONSHIPS
 		// JOB - TRAINEE, ACCOUNT MANAGER
-		trainee1.setJobs(Arrays.asList(job1, job3));
-		trainee2.setJobs(Arrays.asList(job1, job2));
-		trainee3.setJobs(Arrays.asList(job2, job3, job4));
-		trainee4.setJobs(Arrays.asList(job3));
-
-		job1.setTrainees(Arrays.asList(trainee1, trainee2));
-		job2.setTrainees(Arrays.asList(trainee2, trainee3));
-		job3.setTrainees(Arrays.asList(trainee1, trainee3, trainee4));
-		job4.setTrainees(Arrays.asList(trainee3));
-		
+//		trainee1.setJobs(Arrays.asList(job1, job3));
+//		trainee2.setJobs(Arrays.asList(job1, job2));
+//		trainee3.setJobs(Arrays.asList(job2, job3, job4));
+//		trainee4.setJobs(Arrays.asList(job3));
+//
+//		job1.setTrainees(Arrays.asList(trainee1, trainee2));
+//		job2.setTrainees(Arrays.asList(trainee2, trainee3));
+//		job3.setTrainees(Arrays.asList(trainee1, trainee3, trainee4));
+//		job4.setTrainees(Arrays.asList(trainee3));
+//		
 		job1.setAccountManager(accountManager1);
 		job2.setAccountManager(accountManager2);
 		job3.setAccountManager(accountManager1);

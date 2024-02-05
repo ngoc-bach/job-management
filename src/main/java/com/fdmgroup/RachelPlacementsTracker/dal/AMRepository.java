@@ -7,5 +7,5 @@ import com.fdmgroup.RachelPlacementsTracker.coreModel.AccountManager;
 
 @Repository
 public interface AMRepository extends JpaRepository<AccountManager, Integer> {
-
+	public AccountManager findByUserId(int userId);
 }
