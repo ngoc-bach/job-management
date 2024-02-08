@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fdmgroup.RachelPlacementsTracker.coreModel.AccountManager;
 import com.fdmgroup.RachelPlacementsTracker.coreModel.Trainee;
@@ -39,9 +40,12 @@ public class UserServiceTest {
 	@Mock
 	private AMRepository aMRepositoryMock;
 
+	@Mock
+	private PasswordEncoder passwordEncoder;
+	
 	@BeforeEach
 	void setup() {
-		userService = new UserService(userRepositoryMock, traineeRepositoryMock, aMRepositoryMock);
+		userService = new UserService(userRepositoryMock, traineeRepositoryMock, aMRepositoryMock, passwordEncoder);
 	}
 
 	@Test

@@ -12,8 +12,7 @@ import com.fdmgroup.RachelPlacementsTracker.dal.TraineeRepository;
 import com.fdmgroup.RachelPlacementsTracker.dal.UserRepository;
 import com.fdmgroup.RachelPlacementsTracker.exceptions.NotFoundException;
 import com.fdmgroup.RachelPlacementsTracker.model.User;
-
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService {
@@ -21,12 +20,16 @@ public class UserService {
 	private TraineeRepository traineeRepository;
 	private AMRepository aMRepository;
 
+	private PasswordEncoder passwordEncoder;
+
 	@Autowired
-	public UserService(UserRepository userRepository, TraineeRepository traineeRepository, AMRepository aMRepository) {
+	public UserService(UserRepository userRepository, TraineeRepository traineeRepository, AMRepository aMRepository,
+			PasswordEncoder passwordEncoder) {
 		super();
 		this.userRepository = userRepository;
 		this.traineeRepository = traineeRepository;
 		this.aMRepository = aMRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public List<User> findAll() {
@@ -76,6 +79,17 @@ public class UserService {
 			throw new NotFoundException("User with ID: " + userId + " cannot be found");
 		}
 
+	}
+
+	public void register(User user) {
+		// Hash(encode) the password
+		String hashedPAssword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(hashedPAssword);
+		if(user.getRole().equals("trainee")) {
+			this.saveTrainee(user);
+		}else {
+			this.saveAccountManager(user);
+		}
 	}
 
 }
