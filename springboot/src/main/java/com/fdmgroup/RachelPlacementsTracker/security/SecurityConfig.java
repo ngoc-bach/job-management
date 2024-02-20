@@ -64,8 +64,9 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authz -> authz.requestMatchers("/adminonly").hasAuthority("SCOPE_ADMIN")
+						.requestMatchers("/jobs").permitAll()
 						.anyRequest().authenticated()
-//						.requestMatchers("/jobs").permitAll().requestMatchers("/me/**").authenticated()
+//						.requestMatchers("/me/**").authenticated()
 
 				)
 //        	.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)  //The old syntax

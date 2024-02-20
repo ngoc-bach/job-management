@@ -12,11 +12,17 @@ export const getBearerToken = async (requestOptions) => {
     return `Bearer ${response.data}`;
   } catch (error) {
     console.log("Error getting bearer token:", error);
+    return error.response.status;
   }
 };
 
-export const getUser = async (requestOptions) => {
+export const getUser = async (bearer) => {
   try {
+    const requestOptions = {
+      headers: {
+        Authorization: bearer,
+      },
+    };
     const response = await axios.get(`${BASE_URL}/user`, requestOptions);
     return response.data;
   } catch (error) {

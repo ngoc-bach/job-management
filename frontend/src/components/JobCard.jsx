@@ -6,50 +6,128 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PersonIcon from "@mui/icons-material/Person";
+import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import DoneIcon from "@mui/icons-material/Done";
 import { useNavigate } from "react-router-dom";
-import { deleteJob } from "../services/JobService";
+import { Link } from "react-router-dom";
 
-const JobCard = ({ job, user, bearer }) => {
-  const { id, position, company, description, location, status } = job;
+const JobCard = ({ job, user, deleteJob, applyJob }) => {
+  const {
+    id,
+    position,
+    company,
+    location,
+    status,
+    createdDate,
+    hasApplied,
+    editable,
+  } = job;
   const navigate = useNavigate();
 
-  const handelDeleteJob = async (id) => {
-    const foundJobId = id;
-    await deleteJob(user.id, foundJobId, bearer);
-    navigate("/all-jobs");
-  };
-
   return (
-    <Card sx={{ maxWidth: 450 }}>
-      <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
-          {position}
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          {company}
-        </Typography>
-        <Divider />
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          style={{ marginTop: "1rem" }}
-        >
-          <LocationOnIcon color="action" />
-          <Typography variant="body2" color="text.secondary">
-            {location}
+    <Card sx={{ maxWidth: 500, minWidth: 320 }}>
+      <Link to={`/all-jobs/${id}`}>
+        <CardContent>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
+            sx={{ color: "#1976d2" }}
+          >
+            {position}
           </Typography>
-        </Stack>
-      </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => handelDeleteJob(id)}>
-          Delete
-        </Button>
-        <Button size="small" onClick={() => handleUpdateJob(id)}>
-          Edit
-        </Button>
-      </CardActions>
+          <Typography variant="subtitle1" color="text.secondary">
+            {company}
+          </Typography>
+          <Divider />
+          <Stack direction="row" spacing={4} justifyContent={"space-between"}>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              style={{ marginTop: "1rem" }}
+            >
+              <LocationOnIcon color="action" />
+              <Typography variant="body2" color="text.secondary">
+                {location}
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              style={{ marginTop: "1rem" }}
+            >
+              <CalendarMonthIcon color="action" />
+              <Typography variant="body2" color="text.secondary">
+                {createdDate}
+              </Typography>
+            </Stack>
+          </Stack>
+          <Stack
+            direction="row"
+            spacing={4}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              style={{ marginTop: "1rem" }}
+            >
+              <PersonIcon color="action" />
+              <Typography variant="body2" color="text.secondary">
+                Posted By{" "}
+                {job.accountManager.user.id === user.id
+                  ? "Me"
+                  : job.accountManager.firstName}
+              </Typography>
+            </Stack>
+            <Chip
+              label={job.status}
+              color={job.status === "opening" ? "primary" : "error"}
+              variant="outlined"
+            />
+          </Stack>
+        </CardContent>
+      </Link>
+      {user.role === "admin" ? (
+        <CardActions>
+          <Button
+            size="small"
+            onClick={() => deleteJob(id)}
+            disabled={editable ? false : true}
+          >
+            Delete
+          </Button>
+          <Button
+            size="small"
+            onClick={() => navigate(`/edit-job/${id}`)}
+            disabled={editable ? false : true}
+          >
+            Edit
+          </Button>
+        </CardActions>
+      ) : (
+        <CardActions>
+          {hasApplied ? (
+            <Chip label="APPLIED" icon={<DoneIcon />} />
+          ) : (
+            <Button
+              disabled={status === "closed" ? true : false}
+              variant="contained"
+              size="small"
+              onClick={() => applyJob(id, job)}
+            >
+              Apply
+            </Button>
+          )}
+        </CardActions>
+      )}
     </Card>
   );
 };

@@ -1,5 +1,6 @@
 package com.fdmgroup.RachelPlacementsTracker.coreModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -105,6 +106,9 @@ public class Trainee {
 	}
 
 	public List<Job> getJobs() {
+		if (jobs == null) {
+			jobs = new ArrayList<>();
+		}
 		return jobs;
 	}
 

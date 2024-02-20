@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -11,53 +10,31 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { MenuItem } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { updateUser } from "../services/UserService";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { getUser } from "../services/AuthService";
+import { editJob } from "../services/JobService";
+import { useParams } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-const ProfilePage = ({ bearer, user }) => {
-  const navigate = useNavigate();
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [email, setEmail] = useState(user.email);
-  const [location, setLocation] = useState(user.location);
-  const [username, setUsername] = useState(user.username);
-  const [password, setPassword] = useState(user.password);
-  const [role, setRole] = useState(user.role);
+const EditJobPage = ({ bearer, user, jobs }) => {
+  const { jobId } = useParams();
+  const currentJob = jobs.find((job) => job.id === Number(jobId));
+  const [position, setPosition] = useState(currentJob.position);
+  const [company, setCompany] = useState(currentJob.company);
+  const [location, setLocation] = useState(currentJob.location);
+  const [status, setSatus] = useState(currentJob.status);
+  const [description, setDescription] = useState(currentJob.description);
   const [isSuccess, setIsSuccess] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    const logedInUser = await getUser(bearer);
-    setFirstName(logedInUser.firstName);
-    setLastName(logedInUser.lastName);
-    setEmail(logedInUser.email);
-    setLocation(logedInUser.location);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const updatedUser = {
-      firstName,
-      lastName,
-      email,
-      location,
-      username,
-      password,
-      role,
-    };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const job = { position, company, location, status, description };
     const userId = user.id;
-    const result = await updateUser(bearer, userId, updatedUser);
+    const result = await editJob(userId, jobId, job, bearer);
     if (result === 200) {
       setIsSuccess(true);
       setOpenMessage(true);
@@ -67,9 +44,7 @@ const ProfilePage = ({ bearer, user }) => {
       setOpenMessage(true);
       setMessage("Update failed.Please try again!");
     }
-    fetchUser();
   };
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -91,45 +66,35 @@ const ProfilePage = ({ bearer, user }) => {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <PostAddIcon />
           </Avatar>
+
           <Typography component="h1" variant="h5">
-            Profile
+            Edit Job
           </Typography>
+
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
-                  name="firstName"
-                  label="FirstName"
+                  name="position"
+                  label="Position"
                   type="text"
-                  id="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  id="position"
+                  value={position}
+                  onChange={(e) => setPosition(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
-                  name="lastName"
-                  label="LastName"
+                  name="company"
+                  label="Company"
                   type="text"
-                  id="lastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  fullWidth
-                  name="email"
-                  label="Email"
-                  type="text"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="company"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -144,38 +109,35 @@ const ProfilePage = ({ bearer, user }) => {
                   onChange={(e) => setLocation(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={6}>
                 <TextField
-                  disabled
+                  select
+                  required
                   fullWidth
-                  name="username"
-                  label="Username"
-                  type="text"
-                  id="username"
-                  value={username}
-                  // onChange={(e) => setEmail(e.target.value)}
-                />
+                  label="Job Status"
+                  id="job-status"
+                  defaultValue="opening"
+                  value={status}
+                  onChange={(e) => setSatus(e.target.value)}
+                >
+                  {["opening", "closed"].map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12}>
                 <TextField
-                  disabled
+                  required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  value={password}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  disabled
-                  fullWidth
-                  name="role"
-                  label="Role"
+                  multiline
+                  name="description"
+                  label="Description"
                   type="text"
-                  id="role"
-                  value={role}
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -185,7 +147,7 @@ const ProfilePage = ({ bearer, user }) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Save changes
+              Submit
             </Button>
             <div>
               <Snackbar
@@ -210,4 +172,4 @@ const ProfilePage = ({ bearer, user }) => {
   );
 };
 
-export default ProfilePage;
+export default EditJobPage;

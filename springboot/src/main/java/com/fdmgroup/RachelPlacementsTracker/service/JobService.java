@@ -39,25 +39,25 @@ public class JobService {
 		List<Job> jobs = this.jobRepository.findAll();
 		User foundUser = this.userRepository.findById(userId)
 				.orElseThrow(() -> new NotFoundException("User with ID: " + userId + " cannot be found"));
-		if (foundUser.getRole().equals("admin")) { 
-			for (Job job : jobs) { 
+		if (foundUser.getRole().equals("admin")) {
+			for (Job job : jobs) {
 				job.setEditableByUserId(userId);
 			}
-		} 
+		}
 		return jobs;
 	}
 
 	public List<Job> findJobsByUserId(int userId) {
 		List<Job> jobs = this.jobRepository.findAll();
-		User foundUser = this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with ID: " + userId + " cannot be found"));
-		if(foundUser.getRole().equals("admin")) {
-			for (Job job : jobs) { 
+		User foundUser = this.userRepository.findById(userId)
+				.orElseThrow(() -> new NotFoundException("User with ID: " + userId + " cannot be found"));
+		if (foundUser.getRole().equals("admin")) {
+			for (Job job : jobs) {
 				job.setEditableByUserId(userId);
 			}
-			return jobs.stream()
-					.filter(job -> job.getAccountManager().getUser().getId() == userId)
+			return jobs.stream().filter(job -> job.getAccountManager().getUser().getId() == userId)
 					.collect(Collectors.toList());
-		} else { 
+		} else {
 			Trainee trainee = this.traineeRepository.findTraineeByUserId(userId)
 					.orElseThrow(() -> new NotFoundException("Trainee with ID: " + userId + " cannot be found"));
 			return trainee.getJobs();
@@ -69,12 +69,18 @@ public class JobService {
 				.orElseThrow(() -> new NotFoundException("Job with ID: " + jobId + " cannot be found"));
 	}
 
+	public Job findJobByUserId(int jobId, int userId) {
+		return findAll(userId).stream().filter(job -> job.getId() == jobId)
+				.collect(Collectors.toList()).get(0);
+	}
+
 	public void save(int userId, Job newJob) {
 		User foundUser = this.userRepository.findById(userId)
 				.orElseThrow(() -> new NotFoundException("User with ID: " + userId + " cannot be found"));
 		if (foundUser.getRole().equals("admin")) {
 			AccountManager am = this.aMRepository.findByUserId(userId);
 			newJob.setAccountManager(am);
+			newJob.setCreatedDate();
 			this.jobRepository.save(newJob);
 		} else {
 			throw new AccessDeniedException("Access denied");
@@ -86,6 +92,7 @@ public class JobService {
 		Job foundJob = findById(existingJob.getId());
 		if (foundJob.getAccountManager().getUser().getId() == userId) {
 			existingJob.setAccountManager(foundJob.getAccountManager());
+			existingJob.setCreatedDate();
 			this.jobRepository.save(existingJob);
 		} else {
 			throw new AccessDeniedException("Access denied");
@@ -122,4 +129,9 @@ public class JobService {
 		}
 
 	}
+
+	public List<Job> findPartialMatch(String q) {
+		return jobRepository.findPartialMatch(q);
+	}
+
 }

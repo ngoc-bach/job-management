@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fdmgroup.RachelPlacementsTracker.coreModel.Job;
@@ -31,15 +32,21 @@ public class JobController {
 		return this.jobService.findAll(userId);
 	}
 
-	@GetMapping("jobs/user")
+	@GetMapping("jobs/stat")
 	public List<Job> findJobsByUserId(@RequestHeader("user_id") String userIdString) {
 		int userId = Integer.parseInt(userIdString);
 		return this.jobService.findJobsByUserId(userId);
 	}
 
+//	@GetMapping("jobs/{jobId}")
+//	public Job findById(@PathVariable int jobId) {
+//		return this.jobService.findById(jobId);
+//	}
+	
 	@GetMapping("jobs/{jobId}")
-	public Job findById(@PathVariable int jobId) {
-		return this.jobService.findById(jobId);
+	public Job findJobByUserId(@PathVariable int jobId, @RequestHeader("user_id") String userIdString) {
+		int userId = Integer.parseInt(userIdString);
+		return this.jobService.findJobByUserId(jobId, userId);
 	}
 
 	@PostMapping("jobs")
@@ -67,6 +74,11 @@ public class JobController {
 	public void deleteJob(@RequestHeader("user_id") String userIdString, @PathVariable int jobId) {
 		int userId = Integer.parseInt(userIdString);
 		this.jobService.delete(userId , jobId);
+	}
+
+	@GetMapping("/jobs/search")
+	public List<Job> searchByPosition(@RequestParam String q){
+		return jobService.findPartialMatch(q);
 	}
 
 }

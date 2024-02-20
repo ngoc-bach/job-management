@@ -21,6 +21,7 @@ const LoginPage = (props) => {
   const [bearer, setBearer] = props.bearer;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
@@ -33,13 +34,17 @@ const LoginPage = (props) => {
       },
     };
     const bearerData = await getBearerToken(requestOptions);
-    setBearer(bearerData);
-    navigate("/");
+    if (bearerData.length > 3) {
+      setBearer(bearerData);
+      navigate("/");
+    } else {
+      setMessage("invalid username or password");
+    }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
           sx={{
@@ -55,12 +60,7 @@ const LoginPage = (props) => {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleLogin}
-            sx={{ mt: 3 }}
-          >
+          <Box component="form" onSubmit={handleLogin} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -95,6 +95,11 @@ const LoginPage = (props) => {
             >
               Login
             </Button>
+            {message && (
+              <Typography variant="body1" sx={{ color: "red" }} mb={1}>
+                {message}
+              </Typography>
+            )}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/register" variant="body2">

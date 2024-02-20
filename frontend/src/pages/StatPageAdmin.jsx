@@ -15,11 +15,11 @@ import { useState } from "react";
 import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const createData = (position, company, location, AM, status, id) => {
-  return { position, company, location, AM, status, id };
+const createData = (position, company, location, status, id) => {
+  return { position, company, location, status, id };
 };
 
-const StatPage = ({ bearer, user }) => {
+const StatPageAdmin = ({ bearer, user, jobs }) => {
   const [statData, setStatData] = useState([]);
   const navigate = useNavigate();
 
@@ -36,14 +36,7 @@ const StatPage = ({ bearer, user }) => {
   }, []);
 
   const rows = statData.map((job) =>
-    createData(
-      job.position,
-      job.company,
-      job.location,
-      job.accountManager.firstName,
-      job.status,
-      job.id
-    )
+    createData(job.position, job.company, job.location, job.status, job.id)
   );
 
   return (
@@ -54,7 +47,7 @@ const StatPage = ({ bearer, user }) => {
         component="div"
         sx={{ margin: "2rem" }}
       >
-        Applied: {statData.length} job(s)
+        Posted: {statData.length} job(s)
       </Typography>
 
       <TableContainer component={Paper} sx={{ mt: "2rem" }}>
@@ -64,7 +57,6 @@ const StatPage = ({ bearer, user }) => {
               <TableCell>POSITION</TableCell>
               <TableCell align="right">COMPANY NAME</TableCell>
               <TableCell align="right">LOCATION</TableCell>
-              <TableCell align="right">AM</TableCell>
               <TableCell align="right">STATUS</TableCell>
             </TableRow>
           </TableHead>
@@ -79,7 +71,6 @@ const StatPage = ({ bearer, user }) => {
                 </TableCell>
                 <TableCell align="right">{row.company}</TableCell>
                 <TableCell align="right">{row.location}</TableCell>
-                <TableCell align="right">{row.AM}</TableCell>
                 {row.status === "opening" ? (
                   <TableCell align="right">{row.status}</TableCell>
                 ) : (
@@ -87,14 +78,17 @@ const StatPage = ({ bearer, user }) => {
                     {row.status}
                   </TableCell>
                 )}
+
                 <TableCell align="right">
-                  <Link
-                    onClick={() => navigate(`/all-jobs/${row.id}`)}
-                    component="button"
-                    variant="body2"
-                  >
-                    Detail
-                  </Link>
+                  {jobs.length > 0 && (
+                    <Link
+                      onClick={() => navigate(`/all-jobs/${row.id}`)}
+                      component="button"
+                      variant="body2"
+                    >
+                      Detail
+                    </Link>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
@@ -105,4 +99,4 @@ const StatPage = ({ bearer, user }) => {
   );
 };
 
-export default StatPage;
+export default StatPageAdmin;

@@ -1,6 +1,4 @@
 /* eslint-disable react/prop-types */
-import axios from "axios";
-
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,31 +8,47 @@ import Box from "@mui/material/Box";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import { MenuItem } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
 import { addJob } from "../services/JobService";
 
 const defaultTheme = createTheme();
 
-const AddJobPage = (props) => {
-  const { bearer } = props;
-  const navigate = useNavigate();
-  const [user, setUser] = useOutletContext();
+const AddJobPage = ({ bearer, user }) => {
   const [position, setPosition] = useState("");
   const [company, setCompany] = useState("");
   const [location, setLocation] = useState("");
   const [status, setSatus] = useState("opening");
+  const [description, setDescription] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const job = { position, company, location, status };
+    const job = { position, company, location, status, description };
     const userId = user.id;
-    await addJob(userId, job, bearer);
-    navigate("/all-jobs");
+    const result = await addJob(userId, job, bearer);
+    if (result === 200) {
+      setIsSuccess(true);
+      setOpenMessage(true);
+      setMessage("Successfully added");
+    } else {
+      setIsSuccess(false);
+      setOpenMessage(true);
+      setMessage("Failed to add.Please try again!");
+    }
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenMessage(false);
+  };
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="md">
@@ -53,12 +67,7 @@ const AddJobPage = (props) => {
           <Typography component="h1" variant="h5">
             Add New Job
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
@@ -105,7 +114,6 @@ const AddJobPage = (props) => {
                   id="job-status"
                   defaultValue="opening"
                   value={status}
-                  // helperText="Please select job status"
                   onChange={(e) => setSatus(e.target.value)}
                 >
                   {["opening", "closed"].map((option) => (
@@ -114,6 +122,19 @@ const AddJobPage = (props) => {
                     </MenuItem>
                   ))}
                 </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  multiline
+                  name="description"
+                  label="Description"
+                  type="text"
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </Grid>
             </Grid>
             <Button
@@ -124,6 +145,22 @@ const AddJobPage = (props) => {
             >
               Submit
             </Button>
+            <div>
+              <Snackbar
+                open={openMessage}
+                autoHideDuration={3000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity={isSuccess ? "success" : "error"}
+                  variant="filled"
+                  sx={{ width: "100%" }}
+                >
+                  {message}
+                </Alert>
+              </Snackbar>
+            </div>
           </Box>
         </Box>
       </Container>

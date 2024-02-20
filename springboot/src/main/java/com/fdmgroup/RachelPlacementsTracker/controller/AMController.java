@@ -35,7 +35,7 @@ public class AMController {
 	}
 	
 	@PostMapping("accountManagers")
-	public void createNewAccountManagers(@RequestBody AccountManager accountManager) {
+	public void createNewAccountManager(@RequestBody AccountManager accountManager) {
 		System.out.println(accountManager);
 		this.aMService.save(accountManager);
 	}

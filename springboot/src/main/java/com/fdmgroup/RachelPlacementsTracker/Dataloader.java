@@ -1,5 +1,7 @@
 package com.fdmgroup.RachelPlacementsTracker;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -47,15 +49,28 @@ public class Dataloader implements ApplicationRunner {
 		this.userService.register(user6);
 
 		// CREATE JOBS
-		Job job1 = new Job("Front-End Developer", "Robert Haft", "url1", "Melbourne", "opening");
-		Job job2 = new Job("Software Developer", "Transurban", "url2", "Melbourne", "opening");
-		Job job3 = new Job("IOS Developer", "Butterfly", "url3", "Sydney", "opening");
-		Job job4 = new Job("Site Reliability Engineer", "Wipro", "url4", "Sydney", "closed");
+		Job job1 = new Job("Front-End Developer", "Robert Haft", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis hendrerit dolor magna eget est. Tellus in metus vulputate eu scelerisque felis imperdiet proin fermentum.", "Melbourne", "opening");
+		Job job2 = new Job("Software Developer", "Transurban", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Melbourne", "opening");
+		Job job3 = new Job("IOS Developer", "Butterfly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Sydney", "opening");
+		Job job4 = new Job("Site Reliability Engineer", "Wipro", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Sydney", "closed");
+		Job job5 = new Job("Technical Consultant", "SymphonyAI", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Melbourne", "opening");
+		Job job6 = new Job("Software Developer", "Green Light Worldwide", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Canberra", "closed");
+		Job job7 = new Job("Data Engineer", "Programa", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Perth", "opening");
+		Job job8 = new Job("Graduate .Net Developer", "Integral Technology Solutions", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Brisbane", "opening");
+		Job job9 = new Job("Machine Learning Engineer", "Mighty Games Group", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Sydney", "closed");
+		Job job10 = new Job("Full Stack Developer", "CivilPro", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non sodales neque sodales ut etiam sit amet nisl. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae.", "Sydney", "opening");
 
+		
 		this.jobService.save(5, job1);
-		this.jobService.save(6, job2);
-		this.jobService.save(5, job3);
+		this.jobService.save(5, job2);
+		this.jobService.save(6, job3);
 		this.jobService.save(6, job4);
+		this.jobService.save(5, job5);
+		this.jobService.save(5, job6);
+		this.jobService.save(6, job7);
+		this.jobService.save(6, job8);
+		this.jobService.save(5, job9);
+		this.jobService.save(5, job10);
 
 	}
 }

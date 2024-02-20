@@ -1,9 +1,9 @@
 package com.fdmgroup.RachelPlacementsTracker.coreModel;
 
 import java.util.List;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,10 +26,12 @@ public class Job {
 
 	@Transient
 	private boolean hasApplied;
-	
+
 	@Transient
 	private boolean isEditable;
-	
+
+	private LocalDate createdDate;
+
 	@ManyToOne
 	@JoinColumn(name = "FK_ACCOUNTMANAGER_ID")
 	private AccountManager accountManager;
@@ -37,7 +39,6 @@ public class Job {
 	@ManyToMany(mappedBy = "jobs")
 	@JsonBackReference
 	private List<Trainee> trainees;
-	
 
 	public Job() {
 		super();
@@ -61,10 +62,18 @@ public class Job {
 		this.location = location;
 		this.status = status;
 	}
-	
-	// getter
+
+	// getter & setter
+	public void setCreatedDate() {
+		this.createdDate = LocalDate.now();
+	}
+
+	public LocalDate getCreatedDate() {
+		return createdDate;
+	}
+
 	public boolean isHasApplied() {
-		for (Trainee trainee : this.trainees) { 
+		for (Trainee trainee : this.trainees) {
 			return trainee.getJobs().contains(this);
 		}
 		return false;
@@ -87,6 +96,10 @@ public class Job {
 	}
 
 	public AccountManager getAccountManager() {
+		if (accountManager == null) {
+			accountManager = new AccountManager();
+		}
+
 		return accountManager;
 	}
 

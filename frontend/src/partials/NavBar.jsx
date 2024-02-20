@@ -21,15 +21,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
+import FDMLogoBlack from "../assets/fdm-logo-black.svg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { navBarItems } from "../Data";
+import { navBarItemsAdmin, navBarItemsUser } from "../Data";
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
 const NavBar = ({ user }) => {
-  // const { user } = props;
-  // const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -50,33 +50,51 @@ const NavBar = ({ user }) => {
 
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar>
+        <img src={FDMLogoBlack} alt="FDM-logo" style={{ width: "3rem" }} />
+      </Toolbar>
       <Divider />
       <List>
-        {navBarItems.map((item, index) => (
-          <ListItem key={item.name} disablePadding>
-            <Link to={item.path}>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index === 0 && <BarChartIcon />}
-                  {index === 1 && <QueryStatsIcon />}
-                  {index === 2 && <PostAddIcon />}
-                  {index === 3 && <PortraitIcon />}
-                  {index === 4 && <LogoutIcon />}
-                </ListItemIcon>
-                <ListItemText primary={item.name} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
+        {user.role === "admin"
+          ? navBarItemsAdmin.map((item, index) => (
+              <ListItem key={item.name} disablePadding>
+                <NavLink
+                  to={item.path}
+                  style={({ isActive }) => ({
+                    color: isActive ? "#1976d2" : "#858585",
+                  })}
+                >
+                  <ListItemButton>
+                    <ListItemIcon>
+                      {index === 0 && <BarChartIcon />}
+                      {index === 1 && <QueryStatsIcon />}
+                      {index === 2 && <PostAddIcon />}
+                      {index === 3 && <PortraitIcon />}
+                      {index === 4 && <LogoutIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+            ))
+          : navBarItemsUser.map((item, index) => (
+              <ListItem key={item.name} disablePadding>
+                <Link to={item.path}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      {index === 0 && <BarChartIcon />}
+                      {index === 1 && <QueryStatsIcon />}
+                      {index === 2 && <PortraitIcon />}
+                      {index === 3 && <LogoutIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            ))}
       </List>
     </div>
   );
-
-  // Remove this const when copying and pasting into your project.
-  // const container =
-  //   window !== undefined ? () => window().document.body : undefined;
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -103,7 +121,7 @@ const NavBar = ({ user }) => {
           {user === "" ? (
             <Button color="inherit">Login</Button>
           ) : (
-            <Button color="inherit">{user.username}</Button>
+            <Button color="inherit">Hello, {user.username}</Button>
           )}
         </Toolbar>
       </AppBar>
@@ -157,9 +175,5 @@ const NavBar = ({ user }) => {
     </Box>
   );
 };
-
-// NavBar.propTypes = {
-//   window: PropTypes.func,
-// };
 
 export default NavBar;
