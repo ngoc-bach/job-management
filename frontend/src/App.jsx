@@ -14,8 +14,8 @@ import StatPageAdmin from "./pages/StatPageAdmin";
 import EditJobPage from "./pages/EditJobPage";
 
 function App() {
-  const [bearer, setBearer] = useState("");
-  const [user, setUser] = useState({});
+  const bearer = sessionStorage.getItem("token");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const [jobs, setJobs] = useState([]);
 
   return (
@@ -23,58 +23,29 @@ function App() {
       <Routes>
         <Route path="/landing" element={<LandingPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        {bearer === "" && (
+        {!bearer && <Route path="/login" element={<LoginPage />} />}
+        <Route path="/" element={<SharedLayout />}>
+          {loggedInUser && loggedInUser.role === "admin" && (
+            <Route index element={<StatPageAdmin jobs={jobs} />} />
+          )}
+          {loggedInUser && loggedInUser.role === "trainee" && (
+            <Route index element={<StatPage />} />
+          )}
           <Route
-            path="/login"
-            element={<LoginPage bearer={[bearer, setBearer]} />}
+            path="/all-jobs"
+            element={<JobListPage jobs={[jobs, setJobs]} />}
           />
-        )}
-        {bearer && (
+          <Route path="/all-jobs/:jobId" element={<JobDetailPage />} />
+          {loggedInUser && loggedInUser.role === "admin" && (
+            <Route path="/add-job" element={<AddJobPage />} />
+          )}
           <Route
-            path="/"
-            element={<SharedLayout bearer={bearer} user={[user, setUser]} />}
-          >
-            {user.role === "admin" && (
-              <Route
-                index
-                element={
-                  <StatPageAdmin bearer={bearer} user={user} jobs={jobs} />
-                }
-              />
-            )}
-            {user.role === "trainee" && (
-              <Route index element={<StatPage bearer={bearer} user={user} />} />
-            )}
-            <Route
-              path="/all-jobs"
-              element={
-                <JobListPage
-                  bearer={bearer}
-                  user={user}
-                  jobs={[jobs, setJobs]}
-                />
-              }
-            />
-            <Route
-              path="/all-jobs/:jobId"
-              element={<JobDetailPage bearer={bearer} user={user} />}
-            />
-            {user.role === "admin" && (
-              <Route
-                path="/add-job"
-                element={<AddJobPage bearer={bearer} user={user} />}
-              />
-            )}
-            <Route
-              path="/edit-job/:jobId"
-              element={<EditJobPage bearer={bearer} user={user} jobs={jobs} />}
-            />
-            <Route
-              path="/profile"
-              element={<ProfilePage bearer={bearer} user={user} />}
-            />
-          </Route>
-        )}
+            path="/edit-job/:jobId"
+            element={<EditJobPage jobs={jobs} />}
+          />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
+
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>

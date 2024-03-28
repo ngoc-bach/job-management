@@ -29,7 +29,8 @@ import { NavLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
-const NavBar = ({ user }) => {
+const NavBar = () => {
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -55,7 +56,7 @@ const NavBar = ({ user }) => {
       </Toolbar>
       <Divider />
       <List>
-        {user.role === "admin"
+        {loggedInUser.role === "admin"
           ? navBarItemsAdmin.map((item, index) => (
               <ListItem key={item.name} disablePadding>
                 <NavLink
@@ -118,10 +119,10 @@ const NavBar = ({ user }) => {
           <Typography variant="h6" noWrap component="div">
             Dash Board
           </Typography>
-          {user === "" ? (
+          {loggedInUser === "" ? (
             <Button color="inherit">Login</Button>
           ) : (
-            <Button color="inherit">Hello, {user.username}</Button>
+            <Button color="inherit">Hello, {loggedInUser.firstName}</Button>
           )}
         </Toolbar>
       </AppBar>

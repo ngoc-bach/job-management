@@ -18,7 +18,9 @@ import { useParams } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-const EditJobPage = ({ bearer, user, jobs }) => {
+const EditJobPage = ({ jobs }) => {
+  const bearer = sessionStorage.getItem("token");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const { jobId } = useParams();
   const currentJob = jobs.find((job) => job.id === Number(jobId));
   const [position, setPosition] = useState(currentJob.position);
@@ -33,7 +35,7 @@ const EditJobPage = ({ bearer, user, jobs }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const job = { position, company, location, status, description };
-    const userId = user.id;
+    const userId = loggedInUser.id;
     const result = await editJob(userId, jobId, job, bearer);
     if (result === 200) {
       setIsSuccess(true);

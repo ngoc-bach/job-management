@@ -17,7 +17,9 @@ import { addJob } from "../services/JobService";
 
 const defaultTheme = createTheme();
 
-const AddJobPage = ({ bearer, user }) => {
+const AddJobPage = () => {
+  const bearer = sessionStorage.getItem("token");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const [position, setPosition] = useState("");
   const [company, setCompany] = useState("");
   const [location, setLocation] = useState("");
@@ -30,7 +32,7 @@ const AddJobPage = ({ bearer, user }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const job = { position, company, location, status, description };
-    const userId = user.id;
+    const userId = loggedInUser.id;
     const result = await addJob(userId, job, bearer);
     if (result === 200) {
       setIsSuccess(true);

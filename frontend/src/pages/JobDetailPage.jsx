@@ -17,7 +17,9 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getJob, applyJob, deleteJob } from "../services/JobService";
 
-const JobDetailPage = ({ bearer, user }) => {
+const JobDetailPage = () => {
+  const bearer = sessionStorage.getItem("token");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const [job, setJob] = useState({});
   const { jobId } = useParams();
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ const JobDetailPage = ({ bearer, user }) => {
 
   const fetchJob = async () => {
     try {
-      const foundJob = await getJob(user.id, jobId, bearer);
+      const foundJob = await getJob(loggedInUser.id, jobId, bearer);
       setJob(foundJob);
     } catch (error) {
       console.log("Error getting job:", error);
@@ -36,13 +38,13 @@ const JobDetailPage = ({ bearer, user }) => {
   };
 
   const handleDeleteJob = async (jobId) => {
-    await deleteJob(user.id, jobId, bearer);
+    await deleteJob(loggedInUser.id, jobId, bearer);
     fetchJob();
     navigate("/all-jobs");
   };
 
   const handleApplyJob = async (job) => {
-    await applyJob(user.id, jobId, job, bearer);
+    await applyJob(loggedInUser.id, jobId, job, bearer);
     fetchJob();
   };
   return (
@@ -89,7 +91,7 @@ const JobDetailPage = ({ bearer, user }) => {
       <Typography variant="body1" gutterBottom sx={{ mt: "0.7rem" }}>
         {job.description}
       </Typography>
-      {user.role === "admin" ? (
+      {loggedInUser.role === "admin" ? (
         <CardActions>
           <Button
             size="large"

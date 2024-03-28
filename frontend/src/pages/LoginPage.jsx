@@ -13,12 +13,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getBearerToken } from "../services/AuthService";
+import { getBearerToken, getUser } from "../services/AuthService";
 
 const defaultTheme = createTheme();
 
-const LoginPage = (props) => {
-  const [bearer, setBearer] = props.bearer;
+const LoginPage = () => {
+  const [bearer, setBearer] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -35,6 +35,8 @@ const LoginPage = (props) => {
     };
     const bearerData = await getBearerToken(requestOptions);
     if (bearerData.length > 3) {
+      sessionStorage.setItem("token", bearerData);
+      await getUser(bearerData);
       setBearer(bearerData);
       navigate("/");
     } else {

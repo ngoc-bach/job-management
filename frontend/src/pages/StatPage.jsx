@@ -19,14 +19,16 @@ const createData = (position, company, location, AM, status, id) => {
   return { position, company, location, AM, status, id };
 };
 
-const StatPage = ({ bearer, user }) => {
+const StatPage = () => {
+  const bearer = sessionStorage.getItem("token");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const [statData, setStatData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchStats(bearer, user.id);
+        const data = await fetchStats(bearer, loggedInUser.id);
         setStatData(data);
       } catch (error) {
         console.error("Error fetching job stat:", error);

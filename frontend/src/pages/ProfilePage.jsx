@@ -20,15 +20,17 @@ import { getUser } from "../services/AuthService";
 
 const defaultTheme = createTheme();
 
-const ProfilePage = ({ bearer, user }) => {
+const ProfilePage = () => {
+  const bearer = sessionStorage.getItem("token");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [email, setEmail] = useState(user.email);
-  const [location, setLocation] = useState(user.location);
-  const [username, setUsername] = useState(user.username);
-  const [password, setPassword] = useState(user.password);
-  const [role, setRole] = useState(user.role);
+  const [firstName, setFirstName] = useState(loggedInUser.firstName);
+  const [lastName, setLastName] = useState(loggedInUser.lastName);
+  const [email, setEmail] = useState(loggedInUser.email);
+  const [location, setLocation] = useState(loggedInUser.location);
+  const [username, setUsername] = useState(loggedInUser.username);
+  const [password, setPassword] = useState(loggedInUser.password);
+  const [role, setRole] = useState(loggedInUser.role);
   const [isSuccess, setIsSuccess] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
   const [message, setMessage] = useState("");
@@ -56,7 +58,7 @@ const ProfilePage = ({ bearer, user }) => {
       password,
       role,
     };
-    const userId = user.id;
+    const userId = loggedInUser.id;
     const result = await updateUser(bearer, userId, updatedUser);
     if (result === 200) {
       setIsSuccess(true);

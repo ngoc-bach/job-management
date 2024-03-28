@@ -15,9 +15,9 @@ import SearchForm from "../components/SearchForm";
 import { Typography } from "@mui/material";
 
 const JobListPage = (props) => {
+  const bearer = sessionStorage.getItem("token");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
   const [jobs, setJobs] = props.jobs;
-  const { bearer } = props;
-  const { user } = props;
   const [keyword, setKeyword] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
@@ -29,7 +29,7 @@ const JobListPage = (props) => {
 
   const fetchData = async () => {
     try {
-      const allJobs = await fetchJobs(user.id, bearer);
+      const allJobs = await fetchJobs(loggedInUser.id, bearer);
       setJobs(allJobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -58,7 +58,7 @@ const JobListPage = (props) => {
   };
 
   const handleApplyJob = async (jobId, job) => {
-    await applyJob(user.id, jobId, job, bearer);
+    await applyJob(loggedInUser.id, jobId, job, bearer);
     fetchData();
   };
   const handleSearch = async (e) => {
@@ -96,7 +96,7 @@ const JobListPage = (props) => {
               <JobCard
                 key={job.id}
                 job={job}
-                user={user}
+                user={loggedInUser}
                 bearer={bearer}
                 deleteJob={handleDeleteJob}
                 applyJob={handleApplyJob}

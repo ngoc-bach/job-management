@@ -24,7 +24,8 @@ export const getUser = async (bearer) => {
       },
     };
     const response = await axios.get(`${BASE_URL}/user`, requestOptions);
-    return response.data;
+    const loggedInUser = JSON.stringify(response.data);
+    sessionStorage.setItem("loggedInUser", loggedInUser);
   } catch (error) {
     console.log("Error getting username:", error);
   }
