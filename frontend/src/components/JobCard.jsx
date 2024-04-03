@@ -28,7 +28,7 @@ const JobCard = ({ job, user, deleteJob, applyJob }) => {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ maxWidth: 500, minWidth: 320 }}>
+    <Card sx={{ maxWidth: 500, minWidth: 320 }} id={id}>
       <Link to={`/all-jobs/${id}`}>
         <CardContent>
           <Typography
@@ -123,7 +123,7 @@ const JobCard = ({ job, user, deleteJob, applyJob }) => {
               size="small"
               onClick={() => applyJob(id, job)}
             >
-              Apply
+              APPLY
             </Button>
           )}
         </CardActions>

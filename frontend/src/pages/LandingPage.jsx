@@ -35,7 +35,7 @@ function Landing() {
                 seamless job application management and job posting control.
                 Designed with both trainees and account managers in mind
               </p>
-              <Button variant="contained" size="large">
+              <Button variant="contained" size="large" id="signup_button">
                 <Link to="/register" style={{ color: "white" }}>
                   Login / Register
                 </Link>

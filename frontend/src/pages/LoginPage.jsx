@@ -94,11 +94,17 @@ const LoginPage = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              id="login_button"
             >
               Login
             </Button>
             {message && (
-              <Typography variant="body1" sx={{ color: "red" }} mb={1}>
+              <Typography
+                variant="body1"
+                sx={{ color: "red" }}
+                mb={1}
+                id="login_error_message"
+              >
                 {message}
               </Typography>
             )}

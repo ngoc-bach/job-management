@@ -49,6 +49,10 @@ const NavBar = () => {
     }
   };
 
+  const handleLogout = () => {
+    sessionStorage.setItem("token", "");
+    sessionStorage.setItem("loggedInUser", "");
+  };
   const drawer = (
     <div>
       <Toolbar>
@@ -67,13 +71,38 @@ const NavBar = () => {
                 >
                   <ListItemButton>
                     <ListItemIcon>
-                      {index === 0 && <BarChartIcon />}
-                      {index === 1 && <QueryStatsIcon />}
-                      {index === 2 && <PostAddIcon />}
-                      {index === 3 && <PortraitIcon />}
-                      {index === 4 && <LogoutIcon />}
+                      {index === 0 && (
+                        <>
+                          <BarChartIcon /> <ListItemText primary={item.name} />
+                        </>
+                      )}
+                      {index === 1 && (
+                        <>
+                          <QueryStatsIcon />{" "}
+                          <ListItemText primary={item.name} />
+                        </>
+                      )}
+                      {index === 2 && (
+                        <>
+                          <PostAddIcon /> <ListItemText primary={item.name} />
+                        </>
+                      )}
+                      {index === 3 && (
+                        <>
+                          <PortraitIcon /> <ListItemText primary={item.name} />
+                        </>
+                      )}
+                      {index === 4 && (
+                        <>
+                          <LogoutIcon onClick={handleLogout} />{" "}
+                          <ListItemText
+                            primary={item.name}
+                            onClick={handleLogout}
+                          />
+                        </>
+                      )}
                     </ListItemIcon>
-                    <ListItemText primary={item.name} />
+                    {/* <ListItemText primary={item.name} /> */}
                   </ListItemButton>
                 </NavLink>
               </ListItem>
@@ -83,12 +112,34 @@ const NavBar = () => {
                 <Link to={item.path}>
                   <ListItemButton>
                     <ListItemIcon>
-                      {index === 0 && <BarChartIcon />}
-                      {index === 1 && <QueryStatsIcon />}
-                      {index === 2 && <PortraitIcon />}
-                      {index === 3 && <LogoutIcon />}
+                      {index === 0 && (
+                        <>
+                          <BarChartIcon />
+                          <ListItemText primary={item.name} />
+                        </>
+                      )}
+                      {index === 1 && (
+                        <>
+                          <QueryStatsIcon />
+                          <ListItemText primary={item.name} />
+                        </>
+                      )}
+                      {index === 2 && (
+                        <>
+                          <PortraitIcon />
+                          <ListItemText primary={item.name} />
+                        </>
+                      )}
+                      {index === 3 && (
+                        <>
+                          <LogoutIcon onClick={handleLogout} />
+                          <ListItemText
+                            primary={item.name}
+                            onClick={handleLogout}
+                          />
+                        </>
+                      )}
                     </ListItemIcon>
-                    <ListItemText primary={item.name} />
                   </ListItemButton>
                 </Link>
               </ListItem>
@@ -116,7 +167,7 @@ const NavBar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" id="dash_board">
             Dash Board
           </Typography>
           {loggedInUser === "" ? (

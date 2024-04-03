@@ -4,14 +4,17 @@ import Container from "@mui/material/Container";
 import NavBar from "./NavBar";
 
 const SharedLayout = () => {
-  return (
-    <>
-      <NavBar />
-      <Container fixed>
-        <Outlet />
-      </Container>
-    </>
-  );
+  const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+  if (loggedInUser) {
+    return (
+      <>
+        <NavBar />
+        <Container fixed>
+          <Outlet />
+        </Container>
+      </>
+    );
+  }
 };
 
 export default SharedLayout;

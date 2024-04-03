@@ -54,7 +54,7 @@ public class DriverUtilities {
 		Properties config = new Properties();
 		String driverName = "";
 		try {
-			config.load(new FileReader("config.properties"));
+			config.load(new FileReader("src/test/resources/config.properties"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
